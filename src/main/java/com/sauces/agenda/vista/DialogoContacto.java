@@ -10,39 +10,16 @@ package com.sauces.agenda.vista;
  * @author daw1
  */
 public class DialogoContacto extends javax.swing.JDialog {
+
     private int opcion;
-    public final static int ACEPTAR=1;
-    public final static int CANCELAR=0;
+    public final static int ACEPTAR = 1;
+    public final static int CANCELAR = 0;
+
     /**
      * Creates new form DialogoContacto
      */
-    public DialogoContacto(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-    }
-public int mostrarCrear(){
-    opcion=CANCELAR;
-    setVisible(true);
-    tfNombre.setEditable(true);
-    
-    return opcion;
-    
-}
-public int mostrarEditar(){
-    opcion=CANCELAR;
-    setVisible(true);
-    tfNombre.setEditable(false);
-    return opcion;
-}
-public String getNombre(){
-    return tfNombre.getText();
-}
-public String getTelefono(){
-    return tfTelefono.getText();
-}
-public String getEmail(){
-    return tfEmail.getText();
-}
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +36,8 @@ public String getEmail(){
         lEmail = new javax.swing.JLabel();
         tfTelefono = new javax.swing.JTextField();
         tfEmail = new javax.swing.JTextField();
+        bAceptar = new javax.swing.JButton();
+        bCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -70,6 +49,20 @@ public String getEmail(){
 
         lEmail.setText("EMAIL");
 
+        bAceptar.setText("ACEPTAR");
+        bAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAceptarActionPerformed(evt);
+            }
+        });
+
+        bCancelar.setText("CANCELAR");
+        bCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -77,16 +70,22 @@ public String getEmail(){
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lTelefono)
-                    .addComponent(lEmail)
-                    .addComponent(lnombre))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfNombre)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 174, Short.MAX_VALUE))
-                    .addComponent(tfEmail))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lTelefono)
+                            .addComponent(lEmail)
+                            .addComponent(lnombre))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfNombre)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 174, Short.MAX_VALUE))
+                            .addComponent(tfEmail)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(bAceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bCancelar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -104,7 +103,11 @@ public String getEmail(){
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lEmail))
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bAceptar)
+                    .addComponent(bCancelar))
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -131,6 +134,70 @@ public String getEmail(){
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void bAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAceptarActionPerformed
+        // TODO add your handling code here:
+       if(!getNombre().isBlank()&&!getTelefono().isBlank()&&!getEmail().isBlank()){
+           opcion=ACEPTAR;
+            setVisible(false);
+        }
+    }//GEN-LAST:event_bAceptarActionPerformed
+
+    private void bCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarActionPerformed
+        // TODO add your handling code here:
+        opcion=CANCELAR;
+        setVisible(false);
+    }//GEN-LAST:event_bCancelarActionPerformed
+    public DialogoContacto(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+    }
+
+    public int mostrarCrear() {
+         opcion=CANCELAR;
+        setVisible(true);
+        tfNombre.setEditable(true);
+        this.setTitle("Crear Contacto");
+        return opcion;
+
+    }
+
+    public int mostrarEditar() {
+        opcion = CANCELAR;
+        tfNombre.setEditable(false);
+        setVisible(true);
+        this.setTitle("Editar Contacto");
+        return opcion;
+    }
+
+    public String getNombre() {
+        return tfNombre.getText();
+    }
+
+    public String getTelefono() {
+        return tfTelefono.getText();
+    }
+
+    public String getEmail() {
+        return tfEmail.getText();
+    }
+
+    public void mostrarNombre(String nombre) {
+        tfNombre.setText(nombre);
+    }
+
+    public void mostrarTelefono(String telefono) {
+        tfTelefono.setText(telefono);
+    }
+
+    public void mostrarEmail(String email) {
+        tfEmail.setText(email);
+    }
+
+    public void limpiarCampos() {
+        tfNombre.setText("");
+        tfTelefono.setText("");
+        tfEmail.setText("");
+    }
     /**
      * @param args the command line arguments
      */
@@ -174,6 +241,8 @@ public String getEmail(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bAceptar;
+    private javax.swing.JButton bCancelar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lEmail;
     private javax.swing.JLabel lTelefono;

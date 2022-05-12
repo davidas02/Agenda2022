@@ -26,7 +26,7 @@ public class ContactoDaoJdbc implements ContactoDao{
     @Override
     public int insertar(Contacto contacto) throws DaoException {
         int n = 0;
-        String sentencia = "insert into cuenta values(?,?,?)";
+        String sentencia = "insert into contacto values(?,?,?)";
         try (Connection con = conexion.getConnection();
                 PreparedStatement ps = con.prepareStatement(sentencia);) {
             ps.setString(1, contacto.getNombre());
@@ -42,7 +42,7 @@ public class ContactoDaoJdbc implements ContactoDao{
     @Override
     public Contacto buscar(String nombre) throws DaoException {
         Contacto c=null;
-        String sentencia= "select * from agenda where nombre=?";
+        String sentencia= "select * from contacto where nombre=?";
         try(Connection con=conexion.getConnection();
             PreparedStatement ps=con.prepareStatement(sentencia);){
             ps.setString(1, nombre);
@@ -59,7 +59,7 @@ public class ContactoDaoJdbc implements ContactoDao{
     @Override
     public int borrar(String nombre) throws DaoException {
         int n=0;
-        String sentencia="delete from agenda where nombre=?";
+        String sentencia="delete from contacto where nombre=?";
         try(Connection con=conexion.getConnection();
             PreparedStatement ps=con.prepareStatement(sentencia);){
             ps.setString(1, nombre);
@@ -73,7 +73,7 @@ public class ContactoDaoJdbc implements ContactoDao{
     @Override
     public int modificar(Contacto contacto) throws DaoException {
 int n=0; 
-        String sentencia="update agenda set telefono =?,email =? where nombre=?;";
+        String sentencia="update contacto set telefono =?,email =? where nombre=?;";
         try(Connection con=conexion.getConnection();
             PreparedStatement ps=con.prepareStatement(sentencia);){
             ps.setString(2,contacto.getEmail());
@@ -88,7 +88,7 @@ int n=0;
     @Override
     public List<Contacto> listar() throws DaoException {
         List<Contacto> listado = null;
-        String sentencia = "select * from cuenta";
+        String sentencia = "select * from contacto";
         try (Connection con = conexion.getConnection();
                 PreparedStatement ps = con.prepareStatement(sentencia);
                 ResultSet rs = ps.executeQuery();) {

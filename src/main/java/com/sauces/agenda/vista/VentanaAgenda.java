@@ -5,7 +5,17 @@
  */
 package com.sauces.agenda.vista;
 
+
 import com.sauces.agenda.controlador.ControladorAgenda;
+import com.sauces.agenda.modelo.Contacto;
+import com.sauces.agenda.vista.ContactoTableModel;
+import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import javax.swing.event.ListSelectionListener;
+
+import javax.swing.event.ListSelectionEvent;
 
 /**
  *
@@ -13,7 +23,8 @@ import com.sauces.agenda.controlador.ControladorAgenda;
  */
 public class VentanaAgenda extends javax.swing.JFrame {
     private ControladorAgenda controlador;
-    
+    private DialogoContacto dialogoContacto=new DialogoContacto(this,true);
+    private ContactoTableModel contactoTM;
     /**
      * Creates new form VentanaAgenda
      */
@@ -30,8 +41,9 @@ public class VentanaAgenda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        selectorFicheros = new javax.swing.JFileChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaContactos = new javax.swing.JTable();
+        tablaContactos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         lnombre = new javax.swing.JLabel();
         tfNombre = new javax.swing.JTextField();
@@ -39,7 +51,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
         lEmail = new javax.swing.JLabel();
         tfTelefono = new javax.swing.JTextField();
         tfEmail = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        tfBuscar = new javax.swing.JTextField();
         bEditar = new javax.swing.JButton();
         bBuscar = new javax.swing.JButton();
         bAnadir = new javax.swing.JButton();
@@ -58,18 +70,21 @@ public class VentanaAgenda extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        TablaContactos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3"
+        contactoTM=new ContactoTableModel();
+        tablaContactos.setModel(contactoTM);
+        tablaContactos.getSelectionModel().addListSelectionListener(
+            new ListSelectionListener() {
+                public void valueChanged(ListSelectionEvent lse){
+                    int fila=tablaContactos.getSelectedRow();
+                    if(fila>=0){
+                        mostrarNombre(tablaContactos.getValueAt(fila,0).toString());
+                        mostrarTelefono(tablaContactos.getValueAt(fila, 1).toString());
+                        mostrarEmail(tablaContactos.getValueAt(fila, 2).toString());
+                    }
+                }
             }
-        ));
-        jScrollPane1.setViewportView(TablaContactos);
+        );
+        jScrollPane1.setViewportView(tablaContactos);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("CONTACTO"));
 
@@ -100,7 +115,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
                     .addComponent(tfNombre)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 86, Short.MAX_VALUE))
                     .addComponent(tfEmail))
                 .addContainerGap())
         );
@@ -122,21 +137,49 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTextField2.setText("jTextField2");
-
         bEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
+        bEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bEditarActionPerformed(evt);
+            }
+        });
 
         bBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/buscar.png"))); // NOI18N
+        bBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bBuscarActionPerformed(evt);
+            }
+        });
 
         bAnadir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/anadir.png"))); // NOI18N
+        bAnadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bAnadirActionPerformed(evt);
+            }
+        });
 
         bBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/borrar.png"))); // NOI18N
+        bBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bBorrarActionPerformed(evt);
+            }
+        });
 
         bListarContactos.setText("LISTAR CONTACTOS");
+        bListarContactos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bListarContactosActionPerformed(evt);
+            }
+        });
 
         menuAgenda.setText("Agenda");
 
         miImportar.setText("Importar");
+        miImportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miImportarActionPerformed(evt);
+            }
+        });
         menuAgenda.add(miImportar);
 
         miExportar.setText("Exportar");
@@ -149,6 +192,11 @@ public class VentanaAgenda extends javax.swing.JFrame {
         menuAgenda.add(jSeparator1);
 
         miSalir.setText("Salir");
+        miSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSalirActionPerformed(evt);
+            }
+        });
         menuAgenda.add(miSalir);
 
         jMenuBar1.add(menuAgenda);
@@ -157,14 +205,29 @@ public class VentanaAgenda extends javax.swing.JFrame {
 
         miCrear.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_INSERT, 0));
         miCrear.setText("Crear");
+        miCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miCrearActionPerformed(evt);
+            }
+        });
         menuContacto.add(miCrear);
 
         miEditar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         miEditar.setText("Editar");
+        miEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEditarActionPerformed(evt);
+            }
+        });
         menuContacto.add(miEditar);
 
         miBorrar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
         miBorrar.setText("Borrar");
+        miBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miBorrarActionPerformed(evt);
+            }
+        });
         menuContacto.add(miBorrar);
 
         jMenuBar1.add(menuContacto);
@@ -179,20 +242,19 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bListarContactos))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(tfBuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bAnadir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(bBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 30, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(bListarContactos)))
+                        .addComponent(bBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -203,18 +265,18 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bBuscar)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bBorrar)
                             .addComponent(bEditar)
                             .addComponent(bAnadir)
-                            .addComponent(bBorrar))
+                            .addComponent(bBuscar)
+                            .addComponent(tfBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(bListarContactos))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -222,8 +284,131 @@ public class VentanaAgenda extends javax.swing.JFrame {
 
     private void miExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miExportarActionPerformed
         // TODO add your handling code here:
+        if(selectorFicheros.showSaveDialog(this)==JFileChooser.APPROVE_OPTION){
+        controlador.exportar();
+        }
     }//GEN-LAST:event_miExportarActionPerformed
 
+    private void miImportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miImportarActionPerformed
+        // TODO add your handling code here:
+        if(selectorFicheros.showOpenDialog(this)==JFileChooser.APPROVE_OPTION){
+        controlador.importar();
+        }
+    }//GEN-LAST:event_miImportarActionPerformed
+
+    private void miSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSalirActionPerformed
+        // TODO add your handling code here:
+         System.exit(0);
+    }//GEN-LAST:event_miSalirActionPerformed
+
+    private void miCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCrearActionPerformed
+        // TODO add your handling code here:
+        
+        if(dialogoContacto.mostrarCrear()==DialogoContacto.ACEPTAR){
+            mostrarNombre(dialogoContacto.getNombre());
+            mostrarTelefono(dialogoContacto.getTelefono());
+            mostrarEmail(dialogoContacto.getEmail());
+            controlador.crear();
+            dialogoContacto.limpiarCampos();
+        }
+    }//GEN-LAST:event_miCrearActionPerformed
+
+    private void miEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarActionPerformed
+        // TODO add your handling code here:
+        dialogoContacto.mostrarNombre(getNombre());
+        if(dialogoContacto.mostrarEditar()==DialogoContacto.ACEPTAR&&!getNombre().isBlank()){
+            mostrarTelefono(dialogoContacto.getTelefono());
+            mostrarEmail(dialogoContacto.getEmail());
+            controlador.editar();;
+            dialogoContacto.limpiarCampos();
+        }
+    }//GEN-LAST:event_miEditarActionPerformed
+
+    private void miBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBorrarActionPerformed
+        // TODO add your handling code here:
+        if(solicitarConfirmacion("Estas seguro que quieres borrar el contacto "+getNombre())){
+            controlador.borrar();
+        }
+    }//GEN-LAST:event_miBorrarActionPerformed
+
+    private void bListarContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bListarContactosActionPerformed
+        // TODO add your handling code here:
+        controlador.listar();
+    }//GEN-LAST:event_bListarContactosActionPerformed
+
+    private void bBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarActionPerformed
+        // TODO add your handling code here:
+        mostrarNombre(tfBuscar.getText());
+        controlador.buscar();
+    }//GEN-LAST:event_bBuscarActionPerformed
+
+    private void bAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnadirActionPerformed
+        // TODO add your handling code here:
+        miCrearActionPerformed(evt);
+    }//GEN-LAST:event_bAnadirActionPerformed
+
+    private void bEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditarActionPerformed
+        // TODO add your handling code here:
+        miEditarActionPerformed(evt);
+    }//GEN-LAST:event_bEditarActionPerformed
+
+    private void bBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBorrarActionPerformed
+        // TODO add your handling code here:
+        miBorrarActionPerformed(evt);
+    }//GEN-LAST:event_bBorrarActionPerformed
+    public void setControlador(ControladorAgenda controlador){
+        this.controlador=controlador;
+    }
+    public String getNombre() {
+        return tfNombre.getText();
+    }
+
+    public String getTelefono() {
+        return tfTelefono.getText();
+    }
+
+    public String getEmail() {
+        return tfEmail.getText();
+    }
+    
+    public String getArchivo(){
+        return selectorFicheros.getSelectedFile().getAbsolutePath();
+    }
+    
+    public void mostrarNombre(String nombre) {
+        tfNombre.setText(nombre);
+    }
+
+    public void mostrarTelefono(String telefono) {
+        tfTelefono.setText(telefono);
+    }
+
+    public void mostrarEmail(String email) {
+        tfEmail.setText(email);
+    }
+    
+    public void mostrarContactos(List<Contacto> listado){
+        contactoTM.setContactos(listado);
+        contactoTM.fireTableDataChanged();
+    }
+    public void mostrarMensaje(String mensaje){
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+    public boolean solicitarConfirmacion(String mensaje){
+        boolean confirmado=false;
+        if(JOptionPane.showConfirmDialog(this, mensaje,"Confirmamos?",JOptionPane.YES_NO_CANCEL_OPTION)==JOptionPane.YES_OPTION){
+            confirmado= true;
+        }
+        return confirmado;
+    }
+    public void limpiarCampos() {
+        tfNombre.setText("");
+        tfTelefono.setText("");
+        tfEmail.setText("");
+    }
+    public void mostrar(){
+        setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
@@ -260,7 +445,6 @@ public class VentanaAgenda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable TablaContactos;
     private javax.swing.JButton bAnadir;
     private javax.swing.JButton bBorrar;
     private javax.swing.JButton bBuscar;
@@ -270,7 +454,6 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lEmail;
     private javax.swing.JLabel lTelefono;
     private javax.swing.JLabel lnombre;
@@ -282,6 +465,9 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private javax.swing.JMenuItem miExportar;
     private javax.swing.JMenuItem miImportar;
     private javax.swing.JMenuItem miSalir;
+    private javax.swing.JFileChooser selectorFicheros;
+    private javax.swing.JTable tablaContactos;
+    private javax.swing.JTextField tfBuscar;
     private javax.swing.JTextField tfEmail;
     private javax.swing.JTextField tfNombre;
     private javax.swing.JTextField tfTelefono;
