@@ -154,9 +154,9 @@ public class DialogoContacto extends javax.swing.JDialog {
 
     public int mostrarCrear() {
          opcion=CANCELAR;
-        setVisible(true);
-        tfNombre.setEditable(true);
         this.setTitle("Crear Contacto");
+        tfNombre.setEditable(true);
+        setVisible(true);
         return opcion;
 
     }
@@ -164,8 +164,8 @@ public class DialogoContacto extends javax.swing.JDialog {
     public int mostrarEditar() {
         opcion = CANCELAR;
         tfNombre.setEditable(false);
-        setVisible(true);
         this.setTitle("Editar Contacto");
+        setVisible(true);
         return opcion;
     }
 

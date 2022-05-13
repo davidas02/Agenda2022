@@ -39,7 +39,9 @@ public class ControladorAgenda {
     }
     public void crear(){
         try {
-            contactoDao.insertar(new Contacto(ventana.getNombre(),ventana.getTelefono(),ventana.getEmail()));
+            if(contactoDao.insertar(new Contacto(ventana.getNombre(),ventana.getTelefono(),ventana.getEmail()))>0){
+                ventana.mostrarMensaje("El contacto "+ventana.getNombre()+" se ha creado");
+            }
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
         }
@@ -47,12 +49,15 @@ public class ControladorAgenda {
     public void editar(){
         
         try {
-            contactoDao.modificar(new Contacto(ventana.getNombre(),ventana.getTelefono(),ventana.getEmail()));
+            if(contactoDao.modificar(new Contacto(ventana.getNombre(),ventana.getTelefono(),ventana.getEmail()))>0){
+                ventana.mostrarMensaje("El contacto "+ ventana.getNombre()+" se ha modificado");
+            }
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
         }
     }
     public void borrar(){
+        if(ventana.solicitarConfirmacion("Estas seguro que quieres borrar el contacto "+ventana.getNombre())){
         String nombre =ventana.getNombre();
         try {
             if(contactoDao.borrar(nombre)>0){
@@ -64,20 +69,28 @@ public class ControladorAgenda {
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
         }
+        }
     }
     public void buscar(){
         try {
             Contacto c=contactoDao.buscar(ventana.getNombre());
+            if(c!=null){
             ventana.mostrarTelefono(c.getTelefono());
             ventana.mostrarEmail(c.getEmail());
+            }else{
+            
+            ventana.limpiarCampos();
+            ventana.mostrarMensaje("No hay ningun contacto con ese nombre");
+            }
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
         }
     }
     public void listar(){
         List<Contacto> listado;
+        int posicion=ventana.getPagina()*5;
         try {
-            listado = contactoDao.listar();
+            listado = contactoDao.listar(posicion,5);
             ventana.mostrarContactos(listado);
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
@@ -107,11 +120,18 @@ public class ControladorAgenda {
         List<Contacto> listado;
         try (BufferedReader br = Files.newBufferedReader(Paths.get(ventana.getArchivo()))) {
             listado = gson.fromJson(br, tipo);
+            for(Contacto c:listado){
+                try{
+                contactoDao.insertar(c);
+                }catch (DaoException ex) {
+                }
+            }
         }catch(JsonSyntaxException | JsonIOException jse){
             ventana.mostrarMensaje(jse.getMessage());
         }catch (IOException ex) {
             ventana.mostrarMensaje(ex.getMessage());
-        }
+        } 
+        
     }
     public void iniciar(){
         ventana.mostrar();

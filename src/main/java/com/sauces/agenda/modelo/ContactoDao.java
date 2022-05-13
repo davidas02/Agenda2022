@@ -17,4 +17,5 @@ public interface ContactoDao {
     public int borrar(String nombre) throws DaoException;
     public int modificar(Contacto contacto) throws DaoException;
     public List<Contacto> listar() throws DaoException;
+    public List<Contacto> listar(int pos,int limite) throws DaoException;
 }

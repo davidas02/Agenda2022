@@ -51,12 +51,13 @@ public class VentanaAgenda extends javax.swing.JFrame {
         lEmail = new javax.swing.JLabel();
         tfTelefono = new javax.swing.JTextField();
         tfEmail = new javax.swing.JTextField();
+        bListarContactos = new javax.swing.JButton();
+        slPagina = new javax.swing.JSlider();
         tfBuscar = new javax.swing.JTextField();
         bEditar = new javax.swing.JButton();
         bBuscar = new javax.swing.JButton();
         bAnadir = new javax.swing.JButton();
         bBorrar = new javax.swing.JButton();
-        bListarContactos = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuAgenda = new javax.swing.JMenu();
         miImportar = new javax.swing.JMenuItem();
@@ -67,6 +68,8 @@ public class VentanaAgenda extends javax.swing.JFrame {
         miCrear = new javax.swing.JMenuItem();
         miEditar = new javax.swing.JMenuItem();
         miBorrar = new javax.swing.JMenuItem();
+
+        selectorFicheros.setCurrentDirectory(new java.io.File("."));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,6 +103,22 @@ public class VentanaAgenda extends javax.swing.JFrame {
 
         tfEmail.setEditable(false);
 
+        bListarContactos.setText("LISTAR CONTACTOS");
+        bListarContactos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bListarContactosActionPerformed(evt);
+            }
+        });
+
+        slPagina.setMaximum(10);
+        slPagina.setPaintTicks(true);
+        slPagina.setValue(0);
+        slPagina.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                slPaginaStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,16 +126,23 @@ public class VentanaAgenda extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lTelefono)
-                    .addComponent(lEmail)
-                    .addComponent(lnombre))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfNombre)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 86, Short.MAX_VALUE))
-                    .addComponent(tfEmail))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lTelefono)
+                            .addComponent(lEmail)
+                            .addComponent(lnombre))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfNombre)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(tfEmail)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bListarContactos, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(slPagina, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -134,13 +160,17 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lEmail))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(bListarContactos)
+                .addGap(79, 79, 79)
+                .addComponent(slPagina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         bEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
         bEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bEditarActionPerformed(evt);
+                editarContacto(evt);
             }
         });
 
@@ -154,21 +184,14 @@ public class VentanaAgenda extends javax.swing.JFrame {
         bAnadir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/anadir.png"))); // NOI18N
         bAnadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bAnadirActionPerformed(evt);
+                crearContacto(evt);
             }
         });
 
         bBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/borrar.png"))); // NOI18N
         bBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bBorrarActionPerformed(evt);
-            }
-        });
-
-        bListarContactos.setText("LISTAR CONTACTOS");
-        bListarContactos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bListarContactosActionPerformed(evt);
+                borrarContacto(evt);
             }
         });
 
@@ -207,7 +230,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
         miCrear.setText("Crear");
         miCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miCrearActionPerformed(evt);
+                crearContacto(evt);
             }
         });
         menuContacto.add(miCrear);
@@ -216,7 +239,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
         miEditar.setText("Editar");
         miEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miEditarActionPerformed(evt);
+                editarContacto(evt);
             }
         });
         menuContacto.add(miEditar);
@@ -225,7 +248,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
         miBorrar.setText("Borrar");
         miBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miBorrarActionPerformed(evt);
+                borrarContacto(evt);
             }
         });
         menuContacto.add(miBorrar);
@@ -241,11 +264,11 @@ public class VentanaAgenda extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(bListarContactos))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(tfBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -255,8 +278,6 @@ public class VentanaAgenda extends javax.swing.JFrame {
                         .addComponent(bEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(bBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,19 +285,16 @@ public class VentanaAgenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bBorrar)
-                            .addComponent(bEditar)
-                            .addComponent(bAnadir)
-                            .addComponent(bBuscar)
-                            .addComponent(tfBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(bListarContactos))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(36, Short.MAX_VALUE))
+                    .addComponent(bBorrar)
+                    .addComponent(bEditar)
+                    .addComponent(bAnadir)
+                    .addComponent(bBuscar)
+                    .addComponent(tfBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -301,35 +319,12 @@ public class VentanaAgenda extends javax.swing.JFrame {
          System.exit(0);
     }//GEN-LAST:event_miSalirActionPerformed
 
-    private void miCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCrearActionPerformed
-        // TODO add your handling code here:
-        
-        if(dialogoContacto.mostrarCrear()==DialogoContacto.ACEPTAR){
-            mostrarNombre(dialogoContacto.getNombre());
-            mostrarTelefono(dialogoContacto.getTelefono());
-            mostrarEmail(dialogoContacto.getEmail());
-            controlador.crear();
-            dialogoContacto.limpiarCampos();
-        }
-    }//GEN-LAST:event_miCrearActionPerformed
-
-    private void miEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarActionPerformed
-        // TODO add your handling code here:
-        dialogoContacto.mostrarNombre(getNombre());
-        if(dialogoContacto.mostrarEditar()==DialogoContacto.ACEPTAR&&!getNombre().isBlank()){
-            mostrarTelefono(dialogoContacto.getTelefono());
-            mostrarEmail(dialogoContacto.getEmail());
-            controlador.editar();;
-            dialogoContacto.limpiarCampos();
-        }
-    }//GEN-LAST:event_miEditarActionPerformed
-
-    private void miBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBorrarActionPerformed
+    private void borrarContacto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarContacto
         // TODO add your handling code here:
         if(solicitarConfirmacion("Estas seguro que quieres borrar el contacto "+getNombre())){
             controlador.borrar();
         }
-    }//GEN-LAST:event_miBorrarActionPerformed
+    }//GEN-LAST:event_borrarContacto
 
     private void bListarContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bListarContactosActionPerformed
         // TODO add your handling code here:
@@ -339,27 +334,46 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private void bBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarActionPerformed
         // TODO add your handling code here:
         mostrarNombre(tfBuscar.getText());
-        controlador.buscar();
+        if(!getNombre().isBlank()){
+            controlador.buscar();
+        }
     }//GEN-LAST:event_bBuscarActionPerformed
 
-    private void bAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAnadirActionPerformed
+    private void editarContacto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarContacto
         // TODO add your handling code here:
-        miCrearActionPerformed(evt);
-    }//GEN-LAST:event_bAnadirActionPerformed
+        dialogoContacto.mostrarNombre(getNombre());
+        dialogoContacto.mostrarTelefono(getTelefono());
+        dialogoContacto.mostrarEmail(getEmail());
+        if(dialogoContacto.mostrarEditar()==DialogoContacto.ACEPTAR&&!getNombre().isBlank()){
+            mostrarTelefono(dialogoContacto.getTelefono());
+            mostrarEmail(dialogoContacto.getEmail());
+            controlador.editar();;
+            dialogoContacto.limpiarCampos();
+        }
+    }//GEN-LAST:event_editarContacto
 
-    private void bEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditarActionPerformed
+    private void crearContacto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearContacto
         // TODO add your handling code here:
-        miEditarActionPerformed(evt);
-    }//GEN-LAST:event_bEditarActionPerformed
+        if(dialogoContacto.mostrarCrear()==DialogoContacto.ACEPTAR){
+            mostrarNombre(dialogoContacto.getNombre());
+            mostrarTelefono(dialogoContacto.getTelefono());
+            mostrarEmail(dialogoContacto.getEmail());
+            controlador.crear();
+            dialogoContacto.limpiarCampos();
+        }
+    }//GEN-LAST:event_crearContacto
 
-    private void bBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBorrarActionPerformed
+    private void slPaginaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slPaginaStateChanged
         // TODO add your handling code here:
-        miBorrarActionPerformed(evt);
-    }//GEN-LAST:event_bBorrarActionPerformed
+        if(!this.slPagina.getValueIsAdjusting()){
+            mostrarMensaje("Hola");
+        }
+    }//GEN-LAST:event_slPaginaStateChanged
     public void setControlador(ControladorAgenda controlador){
         this.controlador=controlador;
     }
     public String getNombre() {
+        
         return tfNombre.getText();
     }
 
@@ -373,6 +387,10 @@ public class VentanaAgenda extends javax.swing.JFrame {
     
     public String getArchivo(){
         return selectorFicheros.getSelectedFile().getAbsolutePath();
+    }
+    
+    public int getPagina(){
+        return slPagina.getValue();
     }
     
     public void mostrarNombre(String nombre) {
@@ -466,6 +484,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private javax.swing.JMenuItem miImportar;
     private javax.swing.JMenuItem miSalir;
     private javax.swing.JFileChooser selectorFicheros;
+    private javax.swing.JSlider slPagina;
     private javax.swing.JTable tablaContactos;
     private javax.swing.JTextField tfBuscar;
     private javax.swing.JTextField tfEmail;

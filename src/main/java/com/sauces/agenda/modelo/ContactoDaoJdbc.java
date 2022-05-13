@@ -88,10 +88,29 @@ int n=0;
     @Override
     public List<Contacto> listar() throws DaoException {
         List<Contacto> listado = null;
-        String sentencia = "select * from contacto";
+        String sentencia = "select * from contacto ";
         try (Connection con = conexion.getConnection();
                 PreparedStatement ps = con.prepareStatement(sentencia);
                 ResultSet rs = ps.executeQuery();) {
+            listado = new ArrayList<>();
+            while (rs.next()) {
+                listado.add(new Contacto(rs.getString("nombre"), rs.getString("telefono"), rs.getString("email")));
+            }
+        } catch (SQLException ex) {
+            throw new DaoException(ex.getMessage());
+        }
+        return listado;
+    }
+
+    @Override
+    public List<Contacto> listar(int pos,int limite) throws DaoException {
+        List<Contacto> listado = null;
+        String sentencia = "select * from contacto limit ?,? ";
+        try (Connection con = conexion.getConnection();
+                PreparedStatement ps = con.prepareStatement(sentencia);){
+                 ps.setInt(1, pos);
+                 ps.setInt(2,limite);
+                ResultSet rs = ps.executeQuery();
             listado = new ArrayList<>();
             while (rs.next()) {
                 listado.add(new Contacto(rs.getString("nombre"), rs.getString("telefono"), rs.getString("email")));
