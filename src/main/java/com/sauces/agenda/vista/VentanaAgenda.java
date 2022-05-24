@@ -366,7 +366,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private void slPaginaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slPaginaStateChanged
         // TODO add your handling code here:
         if(!this.slPagina.getValueIsAdjusting()){
-            mostrarMensaje("Hola");
+            controlador.listar();
         }
     }//GEN-LAST:event_slPaginaStateChanged
     public void setControlador(ControladorAgenda controlador){
