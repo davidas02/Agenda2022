@@ -18,4 +18,5 @@ public interface ContactoDao {
     public int modificar(Contacto contacto) throws DaoException;
     public List<Contacto> listar() throws DaoException;
     public List<Contacto> listar(int pos,int limite) throws DaoException;
+    public List<Contacto> buscarPorEmail(String email) throws DaoException;
 }

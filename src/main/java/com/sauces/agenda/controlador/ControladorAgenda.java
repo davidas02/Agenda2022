@@ -10,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import com.sauces.agenda.modelo.Contacto;
 import com.sauces.agenda.modelo.ContactoDao;
 import com.sauces.agenda.modelo.DaoException;
@@ -82,6 +81,38 @@ public class ControladorAgenda {
             ventana.limpiarCampos();
             ventana.mostrarMensaje("No hay ningun contacto con ese nombre");
             }
+        } catch (DaoException ex) {
+            ventana.mostrarMensaje(ex.getMessage());
+        }
+    }
+    public void contarContactos(){
+        try {
+            int longitud=contactoDao.listar().size();
+            ventana.mostrarMensaje(longitud+"");
+        } catch (DaoException ex) {
+            Logger.getLogger(ControladorAgenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void buscarPorEmail(){
+    List<Contacto> listado;
+        try {
+            listado=contactoDao.buscarPorEmail(ventana.getEntradaExamen());
+            ventana.mostrarContactos(listado);
+        } catch (DaoException ex) {
+            ventana.mostrarMensaje(ex.getMessage());
+        }
+    }
+    public void exportarJson(){
+    java.lang.reflect.Type tipo = new com.google.gson.reflect.TypeToken<List<Contacto>>() {
+        }.getType();
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get("contactosExamen.json"))) {
+            gson.toJson(contactoDao.listar(), tipo, bw);
+        } catch (IOException ex) {
+            ventana.mostrarMensaje(ex.getMessage());
         } catch (DaoException ex) {
             ventana.mostrarMensaje(ex.getMessage());
         }

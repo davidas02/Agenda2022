@@ -19,7 +19,7 @@ import java.util.Properties;
  *
  * @author daw1
  */
-public class appAgenda {
+public class AppAgenda {
 
     /**
      * @param args the command line arguments

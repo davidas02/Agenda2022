@@ -53,6 +53,9 @@ public class VentanaAgenda extends javax.swing.JFrame {
         tfEmail = new javax.swing.JTextField();
         bListarContactos = new javax.swing.JButton();
         slPagina = new javax.swing.JSlider();
+        bNumeroContactos = new javax.swing.JButton();
+        bBuscarEmail = new javax.swing.JButton();
+        bExportarJson = new javax.swing.JButton();
         tfBuscar = new javax.swing.JTextField();
         bEditar = new javax.swing.JButton();
         bBuscar = new javax.swing.JButton();
@@ -110,7 +113,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
             }
         });
 
-        slPagina.setMaximum(10);
+        slPagina.setMaximum(20);
         slPagina.setPaintTicks(true);
         slPagina.setValue(0);
         slPagina.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -119,30 +122,56 @@ public class VentanaAgenda extends javax.swing.JFrame {
             }
         });
 
+        bNumeroContactos.setText("NÚMERO DE CONTACTOS");
+        bNumeroContactos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bNumeroContactosActionPerformed(evt);
+            }
+        });
+
+        bBuscarEmail.setText("BUSCAR POR EMAIL");
+        bBuscarEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bBuscarEmailActionPerformed(evt);
+            }
+        });
+
+        bExportarJson.setText("EXPORTAR A JSON");
+        bExportarJson.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bExportarJsonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bNumeroContactos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bBuscarEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lTelefono)
-                            .addComponent(lEmail)
-                            .addComponent(lnombre))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfNombre)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(tfEmail)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bListarContactos, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(slPagina, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lTelefono)
+                                    .addComponent(lEmail)
+                                    .addComponent(lnombre))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tfNombre)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(tfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(tfEmail)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(bListarContactos, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(slPagina, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(bExportarJson, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -164,7 +193,13 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addComponent(bListarContactos)
                 .addGap(79, 79, 79)
                 .addComponent(slPagina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bNumeroContactos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bBuscarEmail)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bExportarJson)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/editar.png"))); // NOI18N
@@ -294,7 +329,7 @@ public class VentanaAgenda extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -369,6 +404,21 @@ public class VentanaAgenda extends javax.swing.JFrame {
             controlador.listar();
         }
     }//GEN-LAST:event_slPaginaStateChanged
+
+    private void bNumeroContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNumeroContactosActionPerformed
+        // TODO add your handling code here:
+        controlador.contarContactos();
+    }//GEN-LAST:event_bNumeroContactosActionPerformed
+
+    private void bBuscarEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bBuscarEmailActionPerformed
+        // TODO add your handling code here:
+        controlador.buscarPorEmail();
+    }//GEN-LAST:event_bBuscarEmailActionPerformed
+
+    private void bExportarJsonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExportarJsonActionPerformed
+        // TODO add your handling code here:
+        controlador.exportarJson();
+    }//GEN-LAST:event_bExportarJsonActionPerformed
     public void setControlador(ControladorAgenda controlador){
         this.controlador=controlador;
     }
@@ -419,6 +469,11 @@ public class VentanaAgenda extends javax.swing.JFrame {
         }
         return confirmado;
     }
+    
+    public String getEntradaExamen(){
+    return JOptionPane.showInputDialog(this, "");
+    }
+    
     public void limpiarCampos() {
         tfNombre.setText("");
         tfTelefono.setText("");
@@ -466,8 +521,11 @@ public class VentanaAgenda extends javax.swing.JFrame {
     private javax.swing.JButton bAnadir;
     private javax.swing.JButton bBorrar;
     private javax.swing.JButton bBuscar;
+    private javax.swing.JButton bBuscarEmail;
     private javax.swing.JButton bEditar;
+    private javax.swing.JButton bExportarJson;
     private javax.swing.JButton bListarContactos;
+    private javax.swing.JButton bNumeroContactos;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

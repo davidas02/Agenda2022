@@ -120,5 +120,23 @@ int n=0;
         }
         return listado;
     }
+
+    @Override
+    public List<Contacto> buscarPorEmail(String email) throws DaoException {
+        List<Contacto> listado = null;
+        String sentencia = "select * from contacto where email=? ";
+        try (Connection con = conexion.getConnection();
+                PreparedStatement ps = con.prepareStatement(sentencia);){
+                ps.setString(1, email);
+                ResultSet rs = ps.executeQuery();
+            listado = new ArrayList<>();
+            while (rs.next()) {
+                listado.add(new Contacto(rs.getString("nombre"), rs.getString("telefono"), rs.getString("email")));
+            }
+        } catch (SQLException ex) {
+            throw new DaoException(ex.getMessage());
+        }
+        return listado;
+    }
     
 }
